@@ -1,0 +1,15 @@
+﻿<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      @Html.RouteLink("მთავარი","Default",null,new{@class="navbar-brand text-center", @style="width:250px"})
+    </div>
+    <ul class="nav navbar-nav">
+            <li class="text-center" style="width:150px">@Html.RouteLink("ტესტები","Default")</li>
+            <li class="text-center" style="width:150px">@Html.RouteLink("რეიტინგი","Raiting")</li>
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+      <li>@Html.RouteLink("ჩემი პროფილი","MyProfile")</li>
+      <li>@Html.RouteLink(Session["User"].ToString()+" გამოსვლა","UserLogOut")</li>
+    </ul>
+  </div>
+</nav>

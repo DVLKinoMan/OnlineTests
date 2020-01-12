@@ -1,0 +1,36 @@
+﻿@model IEnumerable<OnlineTests.WebUI.Models.TestRaitingViewModel>
+@{
+    ViewBag.Title = "ონლაინ ტესტები: რეიტინგი";
+    Layout = "~/Views/Shared/_TestsLayout.cshtml";
+}
+
+@using (Html.BeginForm("SearchTestRaitings", "Raiting", FormMethod.Get))
+            {
+                <div class="container">
+                    <div class="form-group pull-right">
+                        @Html.TextBox("tname",null,new {@style="width:200px", @placeholder="ტესტის რეიტინგის ძიება"})
+                        <button type="submit" class="btn btn-primary">
+                        <span class="glyphicon glyphicon-search"></span>
+                        </button>
+                    </div>
+               </div>
+            }
+<h4>ტესტის რეიტინგი:</h4>
+<hr />
+@foreach (var t in Model)
+{
+<div class="well">
+    <h3>
+        @Html.ActionLink(t.Test.Name,"Index","Test",new { testID=t.Test.ID },null)
+        <span class="pull-right" style="font-size:15pt">
+            კატეგორია: @Html.ActionLink(t.Test.Category.Name, "List","Tests", new { category = t.Test.Category.Name, page = 1, level=(int?)null }, new { @class = "btn btn-primary" })
+            სირთულე: @Html.ActionLink(t.Test.Level.ToString(), "List","Tests", new {category=(string)null, page=1, level=t.Test.Level },new{ @class="btn btn-primary"})
+        </span>
+    </h3>
+    <ul>
+        <li><span class="lead">საშუალო ქულა: @t.AveragePoint</span></li>
+        <li><span class="lead">მაქსიმალური ქულა: @t.Test.maxPoint</span></li>
+        <li><span class="lead">გავლილი ტესტების რაოდენობა: @t.TestTakenNumber</span></li>
+    </ul>
+</div>
+}

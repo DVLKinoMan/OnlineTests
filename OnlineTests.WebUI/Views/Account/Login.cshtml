@@ -1,0 +1,37 @@
+﻿@using OnlineTests.WebUI.Models
+@model OnlineTests.WebUI.Models.LoginViewModel
+
+@{
+    Layout="~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = string.Format("ონლაინ ტესტები - შესვლა: {0}", Model.Role);
+}
+@if(ViewBag.Message!=null){
+    <h4 class="alert alert-success text-center">@ViewBag.Message</h4>
+}
+<h2 class="text-center">გთხოვთ შეხვიდეთ როგორც @Model.Role</h2>
+<hr />
+<div class="container">
+    <div class="row">
+        <div class="col-sm-4 col-sm-offset-4">
+           @using(Html.BeginForm())
+            {
+            <div class="form-group">
+                <label>@Html.DisplayNameFor( m => m.Username ):</label>
+                @Html.TextBoxFor( m => m.Username, new { @class = "form-control", @placeholder="შეიყვანეთ მომხმარებლის სახელი" })
+                @Html.ValidationMessageFor( m => m.Username )
+            </div>
+            <div class="form-group">
+                <label>@Html.DisplayNameFor( m => m.Password ):</label>
+                @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder="შეიყვანეთ მომხმარებლის პაროლი" })
+                @Html.ValidationMessageFor( m => m.Password )
+            </div>
+            if(Model.Role==Role.მომხმარებელი)
+                {
+                   @Html.ActionLink("რეგისტრაცია", "RegisterUser",null, new{ @class="btn btn-default"})
+                }
+            <input type="submit" value="შესვლა" class="btn btn-primary" />
+            }
+        </div>
+   </div>
+</div>
+    

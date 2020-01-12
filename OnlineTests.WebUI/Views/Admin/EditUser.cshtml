@@ -1,0 +1,51 @@
+﻿@model OnlineTests.Domain.Entities.User
+
+@{
+    ViewBag.Title = "ონლაინ ტესტები: მომხმარებლის რედაქტირება";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Html.Partial("AdminNavBar")
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <h5 class="alert alert-info"> @TempData["ErrorMessage"]</h5>
+}
+
+<div class="container">
+<h3>რედაქტირება მომხმარებლის @Model.Name</h3>
+<hr />
+    @using(Html.BeginForm())
+    {
+        @Html.HiddenFor(m=>m.ID)
+        <div class="form-group">
+           <label>@Html.DisplayNameFor(m=>m.Name):</label><br />
+            @Html.TextBoxFor(m=>m.Name,new{ @class="form-control", @placeholder=Model.Name})
+           @Html.ValidationMessageFor(m=>m.Name)
+        </div>
+        <div class="form-group">
+           <label>@Html.DisplayNameFor(m=>m.Email):</label><br />
+            @Html.TextBoxFor(m=>m.Email,new{ @class="form-control", @placeholder=Model.Email})
+           @Html.ValidationMessageFor(m=>m.Email)
+        </div>
+        <div class="form-group">
+           <label>@Html.DisplayNameFor(m=>m.Password):</label><br />
+           @Html.TextBoxFor(m=>m.Password,new{ @class="form-control", @placeholder=Model.Password})
+           @Html.ValidationMessageFor(m=>m.Password)
+        </div>
+        <div class="form-group">
+           <label>@Html.DisplayNameFor(m=>m.IsActive):</label><br />
+            @if(Model.IsActive=="Yes"){
+              @Html.DropDownListFor(m=>m.IsActive, new[]{new SelectListItem(){ Text="აქტიური", Value="Yes" },
+                 new SelectListItem(){ Text="წაშლილი", Value="No" }},new{ @class="form-control" })
+            }
+            else{
+                @Html.DropDownListFor(m=>m.IsActive, new[]{new SelectListItem(){ Text="წაშლილი", Value="No" },
+               new SelectListItem(){ Text="აქტიური", Value="Yes" }},new{ @class="form-control" })
+            }
+           @Html.ValidationMessageFor(m=>m.IsActive)
+        </div>
+    @Html.ActionLink("გამოსვლა შენახვის გარეშე", "ControlUsers",null, new{ @class="btn btn-default"})
+    <input type="submit" value="შენახვა" class="btn btn-primary" />
+    }
+</div>

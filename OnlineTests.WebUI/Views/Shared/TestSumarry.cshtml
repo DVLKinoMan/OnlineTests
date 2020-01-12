@@ -1,0 +1,15 @@
+﻿@model OnlineTests.Domain.Entities.Test
+
+<div class="well">
+    <h3>
+        @Html.ActionLink(@Model.Name, "Index", "Test", new { testID = Model.ID }, new { @class = "" })
+        <span class="pull-right" style="font-size:15pt">
+            @Html.DisplayNameFor(t=>t.Category.Name): @Html.ActionLink(@Model.Category.Name, "List", new { category = @Model.Category.Name, page = 1, level=(int?)null }, new { @class = "btn btn-primary" })
+            @Html.DisplayNameFor(t=>t.Level): @Html.ActionLink(@Model.Level.ToString(), "List", new {category=(string)null, page=1, level=Model.Level },new{ @class="btn btn-primary"})
+        </span>
+    </h3>
+    <ul>
+        <li><span class="lead">კითხვების რაოდენობა: @Model.validQuestions.Count()</span></li>
+        <li><span class="lead">@Html.DisplayNameFor(t=>t.maxPoint): @Model.maxPoint</span></li>
+    </ul>
+</div>

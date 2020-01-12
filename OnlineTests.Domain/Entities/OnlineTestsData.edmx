@@ -1,0 +1,459 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="OnlineTestsModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityContainer Name="OnlineTestsModelStoreContainer">
+          <EntitySet Name="Admins" EntityType="OnlineTestsModel.Store.Admins" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Answers" EntityType="OnlineTestsModel.Store.Answers" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Categories" EntityType="OnlineTestsModel.Store.Categories" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Questions" EntityType="OnlineTestsModel.Store.Questions" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Tests" EntityType="OnlineTestsModel.Store.Tests" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="UserResults" EntityType="OnlineTestsModel.Store.UserResults" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Users" EntityType="OnlineTestsModel.Store.Users" store:Type="Tables" Schema="dbo" />
+          <AssociationSet Name="FK_Answers_QustionId" Association="OnlineTestsModel.Store.FK_Answers_QustionId">
+            <End Role="Questions" EntitySet="Questions" />
+            <End Role="Answers" EntitySet="Answers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Questions_TestId" Association="OnlineTestsModel.Store.FK_Questions_TestId">
+            <End Role="Tests" EntitySet="Tests" />
+            <End Role="Questions" EntitySet="Questions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tests_CategoryId" Association="OnlineTestsModel.Store.FK_Tests_CategoryId">
+            <End Role="Categories" EntitySet="Categories" />
+            <End Role="Tests" EntitySet="Tests" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserResults_TestId" Association="OnlineTestsModel.Store.FK_UserResults_TestId">
+            <End Role="Tests" EntitySet="Tests" />
+            <End Role="UserResults" EntitySet="UserResults" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserResults_UserId" Association="OnlineTestsModel.Store.FK_UserResults_UserId">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserResults" EntitySet="UserResults" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Admins">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Password" Type="nvarchar" Nullable="false" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Answers">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Text" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="IsRight" Type="nvarchar" Nullable="false" MaxLength="3" />
+          <Property Name="QuestionId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Categories">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Questions">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Point" Type="int" Nullable="false" />
+          <Property Name="TimeForAnswer" Type="int" Nullable="false" />
+          <Property Name="Text" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="TestId" Type="int" />
+        </EntityType>
+        <EntityType Name="Tests">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="CategoryId" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="Level" Type="int" Nullable="false" />
+          <Property Name="IsActive" Type="nchar" Nullable="false" MaxLength="3" />
+        </EntityType>
+        <EntityType Name="UserResults">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="TestId" Type="int" Nullable="false" />
+          <Property Name="TestTakenTime" Type="datetime" Nullable="false" />
+          <Property Name="PointsEarned" Type="int" Nullable="false" />
+          <Property Name="MaxPoint" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="Email" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="Password" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="IsActive" Type="nchar" Nullable="false" MaxLength="3" />
+        </EntityType>
+        <Association Name="FK_Answers_QustionId">
+          <End Role="Questions" Type="OnlineTestsModel.Store.Questions" Multiplicity="1" />
+          <End Role="Answers" Type="OnlineTestsModel.Store.Answers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Questions">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Answers">
+              <PropertyRef Name="QuestionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Questions_TestId">
+          <End Role="Tests" Type="OnlineTestsModel.Store.Tests" Multiplicity="0..1" />
+          <End Role="Questions" Type="OnlineTestsModel.Store.Questions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tests">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Questions">
+              <PropertyRef Name="TestId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tests_CategoryId">
+          <End Role="Categories" Type="OnlineTestsModel.Store.Categories" Multiplicity="1" />
+          <End Role="Tests" Type="OnlineTestsModel.Store.Tests" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Categories">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Tests">
+              <PropertyRef Name="CategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserResults_TestId">
+          <End Role="Tests" Type="OnlineTestsModel.Store.Tests" Multiplicity="1" />
+          <End Role="UserResults" Type="OnlineTestsModel.Store.UserResults" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tests">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="UserResults">
+              <PropertyRef Name="TestId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserResults_UserId">
+          <End Role="Users" Type="OnlineTestsModel.Store.Users" Multiplicity="1" />
+          <End Role="UserResults" Type="OnlineTestsModel.Store.UserResults" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="UserResults">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="OnlineTestsModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="OnlineTestsEntities" p1:LazyLoadingEnabled="true">
+          <EntitySet Name="Admins" EntityType="OnlineTestsModel.Admin" />
+          <EntitySet Name="Answers" EntityType="OnlineTestsModel.Answer" />
+          <EntitySet Name="Categories" EntityType="OnlineTestsModel.Category" />
+          <EntitySet Name="Questions" EntityType="OnlineTestsModel.Question" />
+          <EntitySet Name="Tests" EntityType="OnlineTestsModel.Test" />
+          <EntitySet Name="UserResults" EntityType="OnlineTestsModel.UserResult" />
+          <EntitySet Name="Users" EntityType="OnlineTestsModel.User" />
+          <AssociationSet Name="FK_Answers_QustionId" Association="OnlineTestsModel.FK_Answers_QustionId">
+            <End Role="Questions" EntitySet="Questions" />
+            <End Role="Answers" EntitySet="Answers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tests_CategoryId" Association="OnlineTestsModel.FK_Tests_CategoryId">
+            <End Role="Categories" EntitySet="Categories" />
+            <End Role="Tests" EntitySet="Tests" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Questions_TestId" Association="OnlineTestsModel.FK_Questions_TestId">
+            <End Role="Tests" EntitySet="Tests" />
+            <End Role="Questions" EntitySet="Questions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserResults_TestId" Association="OnlineTestsModel.FK_UserResults_TestId">
+            <End Role="Tests" EntitySet="Tests" />
+            <End Role="UserResults" EntitySet="UserResults" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserResults_UserId" Association="OnlineTestsModel.FK_UserResults_UserId">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserResults" EntitySet="UserResults" />
+          </AssociationSet>
+          <EntitySet Name="Answers1" EntityType="OnlineTestsModel.Answers" />
+          <AssociationSet Name="FK_Answers_QustionId1" Association="OnlineTestsModel.FK_Answers_QustionId1">
+            <End Role="Question" EntitySet="Questions" />
+            <End Role="Answers" EntitySet="Answers1" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Admin">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="Answer">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="Text" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="IsRight" Type="String" Nullable="false" MaxLength="3" Unicode="true" FixedLength="true" />
+          <Property Name="QuestionId" Type="Int32" Nullable="false" />
+          <Property Name="AnswerType" Type="String" MaxLength="20" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="Question" Relationship="OnlineTestsModel.FK_Answers_QustionId" FromRole="Answers" ToRole="Questions" />
+        </EntityType>
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="Tests" Relationship="OnlineTestsModel.FK_Tests_CategoryId" FromRole="Categories" ToRole="Tests" />
+        </EntityType>
+        <EntityType Name="Question">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="Point" Type="Int32" Nullable="false" />
+          <Property Name="TimeForAnswer" Type="Time" Nullable="false" />
+          <Property Name="Text" Type="String" Nullable="false" MaxLength="1000" Unicode="true" FixedLength="false" />
+          <Property Name="TestId" Type="Int32" />
+          <NavigationProperty Name="Answers" Relationship="OnlineTestsModel.FK_Answers_QustionId" FromRole="Questions" ToRole="Answers" />
+          <NavigationProperty Name="Test" Relationship="OnlineTestsModel.FK_Questions_TestId" FromRole="Questions" ToRole="Tests" />
+          <NavigationProperty Name="Answers1" Relationship="OnlineTestsModel.FK_Answers_QustionId1" FromRole="Question" ToRole="Answers" />
+        </EntityType>
+        <EntityType Name="Test">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="CategoryId" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="Level" Type="Int32" Nullable="false" />
+          <Property Name="IsActive" Type="String" Nullable="false" MaxLength="3" Unicode="true" FixedLength="true" />
+          <NavigationProperty Name="Category" Relationship="OnlineTestsModel.FK_Tests_CategoryId" FromRole="Tests" ToRole="Categories" />
+          <NavigationProperty Name="Questions" Relationship="OnlineTestsModel.FK_Questions_TestId" FromRole="Tests" ToRole="Questions" />
+          <NavigationProperty Name="UserResults" Relationship="OnlineTestsModel.FK_UserResults_TestId" FromRole="Tests" ToRole="UserResults" />
+        </EntityType>
+        <EntityType Name="UserResult">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="TestId" Type="Int32" Nullable="false" />
+          <Property Name="TestTakenTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="PointsEarned" Type="Int32" Nullable="false" />
+          <Property Name="MaxPoint" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Test" Relationship="OnlineTestsModel.FK_UserResults_TestId" FromRole="UserResults" ToRole="Tests" />
+          <NavigationProperty Name="User" Relationship="OnlineTestsModel.FK_UserResults_UserId" FromRole="UserResults" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="IsActive" Type="String" Nullable="false" MaxLength="3" Unicode="true" FixedLength="true" />
+          <NavigationProperty Name="UserResults" Relationship="OnlineTestsModel.FK_UserResults_UserId" FromRole="Users" ToRole="UserResults" />
+        </EntityType>
+        <Association Name="FK_Answers_QustionId">
+          <End Role="Questions" Type="OnlineTestsModel.Question" Multiplicity="1" />
+          <End Role="Answers" Type="OnlineTestsModel.Answer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Questions">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Answers">
+              <PropertyRef Name="QuestionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tests_CategoryId">
+          <End Role="Categories" Type="OnlineTestsModel.Category" Multiplicity="1" />
+          <End Role="Tests" Type="OnlineTestsModel.Test" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Categories">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Tests">
+              <PropertyRef Name="CategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Questions_TestId">
+          <End Role="Tests" Type="OnlineTestsModel.Test" Multiplicity="1" />
+          <End Role="Questions" Type="OnlineTestsModel.Question" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tests">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Questions">
+              <PropertyRef Name="TestId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserResults_TestId">
+          <End Role="Tests" Type="OnlineTestsModel.Test" Multiplicity="1" />
+          <End Role="UserResults" Type="OnlineTestsModel.UserResult" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tests">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="UserResults">
+              <PropertyRef Name="TestId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserResults_UserId">
+          <End Role="Users" Type="OnlineTestsModel.User" Multiplicity="1" />
+          <End Role="UserResults" Type="OnlineTestsModel.UserResult" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="UserResults">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Answers">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Type="Int32" Name="ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Text" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="IsRight" Nullable="false" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="QuestionId" Nullable="false" />
+          <NavigationProperty Name="Questions" Relationship="OnlineTestsModel.FK_Answers_QustionId1" FromRole="Answers" ToRole="Question" />
+        </EntityType>
+        <Association Name="FK_Answers_QustionId1">
+          <End Type="OnlineTestsModel.Question" Role="Question" Multiplicity="1" />
+          <End Type="OnlineTestsModel.Answers" Role="Answers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Question">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Answers">
+              <PropertyRef Name="QuestionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="OnlineTestsModelStoreContainer" CdmEntityContainer="OnlineTestsEntities">
+          <EntitySetMapping Name="Admins">
+            <EntityTypeMapping TypeName="OnlineTestsModel.Admin">
+              <MappingFragment StoreEntitySet="Admins">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Categories">
+            <EntityTypeMapping TypeName="OnlineTestsModel.Category">
+              <MappingFragment StoreEntitySet="Categories">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Questions">
+            <EntityTypeMapping TypeName="OnlineTestsModel.Question">
+              <MappingFragment StoreEntitySet="Questions">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Point" ColumnName="Point" />
+                <ScalarProperty Name="TimeForAnswer" ColumnName="TimeForAnswer" />
+                <ScalarProperty Name="Text" ColumnName="Text" />
+                <ScalarProperty Name="TestId" ColumnName="TestId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tests">
+            <EntityTypeMapping TypeName="OnlineTestsModel.Test">
+              <MappingFragment StoreEntitySet="Tests">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Level" ColumnName="Level" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserResults">
+            <EntityTypeMapping TypeName="OnlineTestsModel.UserResult">
+              <MappingFragment StoreEntitySet="UserResults">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="TestId" ColumnName="TestId" />
+                <ScalarProperty Name="TestTakenTime" ColumnName="TestTakenTime" />
+                <ScalarProperty Name="PointsEarned" ColumnName="PointsEarned" />
+                <ScalarProperty Name="MaxPoint" ColumnName="MaxPoint" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="OnlineTestsModel.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Answers1">
+            <EntityTypeMapping TypeName="OnlineTestsModel.Answers">
+              <MappingFragment StoreEntitySet="Answers">
+                <ScalarProperty Name="QuestionId" ColumnName="QuestionId" />
+                <ScalarProperty Name="IsRight" ColumnName="IsRight" />
+                <ScalarProperty Name="Text" ColumnName="Text" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

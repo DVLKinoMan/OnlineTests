@@ -1,0 +1,64 @@
+﻿@model OnlineTests.Domain.Entities.Question
+
+@{
+    ViewBag.Title = "ონლაინ ტესტები: " + ViewBag.ActionName;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+   
+
+@Html.Partial("AdminNavBar")
+
+<div class="container">
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+    }
+
+    @if( ViewBag.ActionName=="კითხვის რედაქტირება"){
+      @Html.ActionLink("პასუხის დამატება", "Edit_Create_Answer", new { questionID = Model.ID }, new { @class="btn btn-primary pull-right"})
+    }
+
+     <h3>@ViewBag.ActionName</h3>
+     <hr />
+
+ @using(Html.BeginForm()){
+     @Html.HiddenFor(m => m.ID)
+<table>
+  <tr>
+       <td class="col-md-3">
+         <div class="form-group">
+            <label>@Html.DisplayNameFor(m=>m.Point):</label>
+            @Html.TextBoxFor(m=>m.Point,new {@class="form-control", placeholder=Model.Point})
+            @Html.ValidationMessageFor(m=>m.Point)
+        </div>
+      </td>
+      <td class="col-md-3">
+        <div class="form-group">
+            <label>@Html.DisplayNameFor(m=>m.TimeForAnswer):</label>
+            @Html.TextBoxFor(m=>m.TimeForAnswer,new {@class="form-control", placeholder=Model.TimeForAnswer})
+            @Html.ValidationMessageFor(m=>m.TimeForAnswer)
+        </div>
+      </td>
+  </tr>
+ </table>
+       <div class="form-group">
+          <label>@Html.DisplayNameFor(m=>m.Text):</label>
+          @Html.TextAreaFor(m=>m.Text,new {@class="form-control",row=5, placeholder=Model.Text})
+          @Html.ValidationMessageFor(m=>m.Text)
+       </div>
+     
+    @Html.ActionLink("გამოსვლა შენახვის გარეშე", "Edit_Create_Test", new { testID=Model.TestId }, new { @class = "btn btn-default" })
+    <input type="submit" value="შენახვა" class="btn btn-primary" />
+ }
+    <br /><br />
+    <h4>სავარაუდო პასუხები:</h4>
+    <hr />
+    @Html.Partial("AdminAnswersSummary", Model.Answers)
+
+</div>
+

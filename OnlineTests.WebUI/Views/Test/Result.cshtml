@@ -1,0 +1,18 @@
+﻿@model OnlineTests.Domain.Entities.UserResult
+
+@{
+    ViewBag.Title = "ტესტის შედეგები: "+@Model.Test.Name;
+    Layout = "~/Views/Shared/_TestsLayout.cshtml";
+}
+
+<h4>ტესტის შედეგი</h4>
+<hr />
+<ul>
+    <li>ტესტის სახელწოდება: @Model.Test.Name</li>
+    <li>ტესტის კატეგორია: @Model.Test.Category.Name</li>
+    <li>ტესტის გავლის თარიღი: @Model.TestTakenTime</li>
+    <li>დაგროვილი ქულა: @Model.PointsEarned</li>
+    <li>ტესტის მაქსიმალური ქულა: @Model.MaxPoint</li>
+</ul>
+
+

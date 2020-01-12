@@ -1,0 +1,32 @@
+﻿@model OnlineTests.WebUI.Models.TestViewModel
+
+@{
+    ViewBag.Title = "ონლაინ ტესტები: "+Model.Test.Name;
+    Layout = "~/Views/Shared/_TestsLayout.cshtml";
+}
+
+@using(Html.BeginForm()){
+<div id="Partial" class="container">
+    <h2>@Model.Test.Name</h2>
+    <hr />
+    <ul>
+        <li>@Html.DisplayNameFor(t=>t.Test.Category.Name): @Model.Test.Category.Name</li>
+        <li>კითხვების რაოდენობა: @Model.Test.validQuestions.Count()</li>
+        <li>@Html.DisplayNameFor(t=>t.Test.maxPoint): @Model.Test.maxPoint</li>
+        <li>@Html.DisplayNameFor(t=>t.Test.Level): @Model.Test.Level</li>
+    </ul>
+        @Html.HiddenFor(t=>t.TestID)
+       <h4>შედეგები გამოჩნდეს რეიტინგში @Html.CheckBoxFor(t => t.SaveRatings)</h4>
+    <div class="well">
+        <ul>
+            <li><span class="lead" style="font-size:12pt">თითეულ კითხვას აქვს სავარაუდო პასუხები, რომლიდანად ერთი მაინც არის სწორი;</span></li>
+            <li><span class="lead" style="font-size:12pt">სწორი პასუხების რაოდენობა ნაკლებია სავარაუდო პასუხებზე;</span></li>
+            <li><span class="lead" style="font-size:12pt">ქულა კითხვაში იწერება იმ შემთხვევაში, თუ მონიშნულია ყველა სწორი პასუხი და არცერთი არასწორი;</span></li>
+            <li><span class="lead" style="font-size:12pt">თითეული კითხვა ფასდება სხვადასხვა ქულით;</span></li>
+            <li><span class="lead" style="font-size:12pt">თითეულ კითხვას პასუხის გასაცემად აქვს დრო, რომლის ამოწურვის შემდეგ პასუხი არ ჩაითვლება იმ შემთხვავაშიც თუ სწორია და მოხდება შემდეგი კითხვის ჩატვირთვა;</span></li>
+            <li><span class="lead" style="font-size:12pt">ტესტის დამთავრების შემდეგ, იმ შემთხვევაში თუ მონიშნულია "შედეგები გამოჩნდეს რეიტინგში" checkbox, ტესტის შედეგები იქნება შენახული და მისი ნახვა შესაძლებელი იქნება მომხმარებლის პროფილში; </span></li>
+        </ul>
+    </div>
+       <input type="submit" class="btn btn-primary text-center" value="ტესტის დაწყება" />
+</div>
+}

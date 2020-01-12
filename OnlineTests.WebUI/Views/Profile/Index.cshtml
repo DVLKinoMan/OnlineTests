@@ -1,0 +1,35 @@
+﻿@model IEnumerable<OnlineTests.Domain.Entities.UserResult>
+@{
+    ViewBag.Title = "პროფილი: " + @ViewBag.Username;
+    Layout = "~/Views/Shared/_TestsLayout.cshtml";
+}
+
+@using (Html.BeginForm("SearchTestRaitings", "Raiting", FormMethod.Get))
+            {
+                <div class="container">
+                    <div class="form-group pull-right">
+                        @Html.TextBox("tname",null,new {@style="width:200px", @placeholder="ტესტის რეიტინგის ძიება"})
+                        <button type="submit" class="btn btn-primary">
+                        <span class="glyphicon glyphicon-search"></span>
+                        </button>
+                    </div>
+               </div>
+            }
+<h4>@ViewBag.Username-ს შედეგები:</h4>
+<hr />
+@foreach (var result in Model)
+{
+<div class="well">
+    <h3>
+        @Html.ActionLink(result.Test.Name,"Index","Test",new { testID=result.Test.ID },null)
+        <span class="pull-right" style="font-size:15pt">ტესტის გავლის თარიღი: @result.TestTakenTime</span>
+    </h3>
+    <ul>
+        <li><span class="lead">კატეგორია: @Html.ActionLink(result.Test.Category.Name, "List","Tests", new { category = result.Test.Category.Name, page = 1, level=(int?)null },null)</span></li>
+        <li><span class="lead">სირთულე: @Html.ActionLink(result.Test.Level.ToString(), "List","Tests", new {category=(string)null, page=1, level=result.Test.Level },null)</span></li>
+        <li><span class="lead">დაგროვილი ქულა: @result.PointsEarned</span></li>
+        <li><span class="lead">მაქსიმალური ქულა: @result.MaxPoint</span></li>
+    </ul>
+</div>
+}
+

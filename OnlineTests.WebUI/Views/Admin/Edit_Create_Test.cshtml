@@ -1,0 +1,98 @@
+﻿@model OnlineTests.Domain.Entities.Test
+
+@{
+    ViewBag.Title = "ონლაინ ტესტები: " + @ViewBag.ActionName;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Html.Partial("AdminNavBar")
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
+
+<div class="container">   
+
+    @if(ViewBag.ActionName!="ახალი ტესტის შექმნა"){
+        
+      @Html.ActionLink("კითხვის დამატება", "Edit_Create_Question", "Admin", new { testID = Model.ID }, new { @class = "btn btn-primary pull-right" });
+    }
+
+<h3>@ViewBag.ActionName</h3>
+<hr />
+    @using (Html.BeginForm())
+    {
+        @Html.HiddenFor(m=>m.ID)
+
+        <table>
+            <tr>
+                <td class="col-md-3">
+                    <div class="form-group">
+                        <label>@Html.DisplayNameFor(m=>m.Name):</label><br />
+                         @Html.TextBoxFor(m=>m.Name,new{ @class="form-control", placeholder=Model.Name})
+                         @Html.ValidationMessageFor(m=>m.Name)
+                    </div>
+                </td>
+                <td class="col-md-3">
+                    <div class="form-group">
+                        <label>@Html.DisplayNameFor(m=>m.Category.Name):</label><br />
+                        @Html.DropDownListFor(m=>m.CategoryId,ViewBag.Categories as IEnumerable<SelectListItem>,new{ @class="form-control" })
+                        @Html.ValidationMessageFor(m=>m.Category.Name)
+                    </div>
+                </td>
+                <td class="col-md-2">
+                    <div class="form-group">
+                        <label>@Html.DisplayNameFor(m=>m.Level):</label><br />
+                        @Html.DropDownListFor(m=>m.Level,new SelectList(new[]{1,2,3,4,5,6,7,8,9,10},Model.Level),new{ @class="form-control" })
+                        @Html.ValidationMessageFor(m=>m.Level)
+                    </div>
+                 </td>
+                <td class="col-md-4">
+                    <div class="form-group">
+                        <label>@Html.DisplayNameFor(m=>m.IsActive):</label><br />
+                        @if(Model.IsActive=="Yes"){
+                             @Html.DropDownListFor(m=>m.IsActive, new[]{new SelectListItem(){ Text="აქტიური", Value="Yes" },
+                             new SelectListItem(){ Text="წაშლილი", Value="No" }},new{ @class="form-control" })
+                        }
+                        else{
+                             @Html.DropDownListFor(m=>m.IsActive, new[]{new SelectListItem(){ Text="წაშლილი", Value="No" },
+                             new SelectListItem(){ Text="აქტიური", Value="Yes" }},new{ @class="form-control" })
+                        }
+                        @Html.ValidationMessageFor(m=>m.IsActive)
+                    </div>
+                </td>
+         </tr>
+    </table>
+    
+    <table>
+         <tr>
+                <td class="col-md-3">
+                    @Html.ActionLink("გამოსვლა შენახვის გარეშე", "AdminIndex",null, new{ @class="btn btn-default"})
+                </td>
+    
+                <td class="col-md-3">
+                    <input type="submit" value="შენახვა" class="btn btn-primary" />
+                </td>
+    
+         </tr>
+    </table>
+    }
+
+    <h3>ტესტის კითხვები:</h3>
+    <hr />
+    @if(Model.Questions!=null){
+       foreach (var q in Model.Questions)
+         {
+            @Html.Action("QuestionSummary",new { question=q, testID=Model.ID })
+         }
+     }
+    <div class="btn-group pull-right">
+        
+    </div>
+</div>
+

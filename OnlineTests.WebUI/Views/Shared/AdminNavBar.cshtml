@@ -1,0 +1,22 @@
+﻿<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      @Html.RouteLink("მთავარი","AdminControlTests",null,new{@class="navbar-brand text-center", @style="width:250px"})
+    </div>
+    <ul class="nav navbar-nav">
+        @if (ViewBag.NavBarActive == "მომხმარებლები")
+        {
+             <li class="text-center" style="width:150px">@Html.RouteLink("ტესტები","AdminControlTests")</li>
+             <li class="active text-center" style="width:150px">@Html.RouteLink("მომხმარებლები","AdminControlUsers")</li>
+        }
+        @if(ViewBag.NavBarActive == "ტესტები")
+        {
+            <li class="active text-center" style="width:150px">@Html.RouteLink("ტესტები","AdminControlTests")</li>
+            <li class="text-center" style="width:150px">@Html.RouteLink("მომხმარებლები","AdminControlUsers")</li>
+        }
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+      <li>@Html.RouteLink("ადმინისტრატორი "+Session["Admin"].ToString()+" გამოსვლა","AdminLogOut")</li>
+    </ul>
+  </div>
+</nav>

@@ -1,0 +1,89 @@
+﻿@using OnlineTests.WebUI.Models;
+@model OnlineTests.WebUI.Models.TestViewModel
+
+@{
+    ViewBag.Title = "ონლაინ ტესტები: "+Model.Test.Name;
+    Layout = "~/Views/Shared/_TestsLayout.cshtml";
+}
+
+<script>
+    $(window).load(function () {
+        CheckActive();
+        var time = parseInt(document.getElementById("TimeRemaining").innerHTML);
+        if(time<=0)
+            $("#sbmtForm").submit();
+    });
+
+    setInterval(function () { setTime() }, 1000);
+
+    function CheckActive() { 
+            var ch = document.getElementsByTagName('input');
+            var is_checked = false;
+            for (var x = 0; x < ch.length; x++) {
+                if (ch[x].type == 'checkbox') {
+                    is_checked = ch[x].checked;
+                    if (is_checked) {
+                        document.getElementById("btnNext").disabled = false;
+                        return;
+                    }
+                }
+                document.getElementById("btnNext").disabled = true;
+        }
+    }
+
+    function setTime() {
+        var time = parseInt(document.getElementById("TimeRemaining").innerHTML) - 1;
+        var id = '@Model.TestID';
+        if (time > 0)
+            document.getElementById("TimeRemaining").innerHTML = time.toString();
+        else {
+            $('#sbmtForm').append('<input type="hidden" name="TimeEnd" value="true" />');
+            $("#sbmtForm").submit();
+        }
+    }
+</script>
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "sbmtForm" }))
+{
+    @Html.HiddenFor(t => t.TestID)
+    @Html.HiddenFor(t=>t.SaveRatings)
+    @Html.HiddenFor(t => t.Point)
+    @Html.HiddenFor(t => t.CurrentQuestionNumber)
+    @Html.HiddenFor(t=>t.CurrentQuestion.Point)
+    @Html.HiddenFor(t=>t.CurrentQuestion.Text)
+    @Html.HiddenFor(t=>t.CurrentQuestion.TimeForAnswer)
+<h2>@Model.Test.Name</h2>
+    <hr />
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <table class="col-md-12">
+            <tr>
+                <td class="col-md-3">კითხვა @Model.CurrentQuestionNumber/@Model.Test.validQuestions.Count()</td>
+                <td class="col-md-3">
+                    <label class="btn btn-default" style="cursor: default">მიმდინარე ქულა: <span class="badge">@Model.Point/@Model.Test.maxPoint</span></label>
+                </td>
+                <td class="col-md-4">
+                    <label class="btn btn-default" style="cursor: default">დრო პასუხის გასაცემად: <span class="badge"><span id="TimeRemaining">@Model.CurrentQuestion.TimeForAnswer</span> წამი</span> </label>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="panel-body">
+        <div class="well">@Model.CurrentQuestion.Text</div>
+        <div class="well">
+            <table>
+                @for (int i = 0; i < Model.CurrentAnswers.Count;i++ )
+                {
+                    @Html.HiddenFor(a => Model.CurrentAnswers[i].ID)
+                    @Html.HiddenFor(a=>Model.CurrentAnswers[i].Text)
+                <tr>
+                    <td>@Html.CheckBoxFor(a => Model.CurrentAnswers[i].Checked, new { @onclick = "CheckActive()" })</td>
+                    <td>@Model.CurrentAnswers[i].Text</td>
+                </tr>
+                }
+            </table>
+        </div>
+        <input type="submit" id="btnNext" class="btn btn-primary" disabled value="შემდეგი" />
+    </div>
+</div>
+}

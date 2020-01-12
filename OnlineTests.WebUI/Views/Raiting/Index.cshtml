@@ -1,0 +1,42 @@
+﻿@model IEnumerable<OnlineTests.WebUI.Models.UserViewModel>
+@{
+    ViewBag.Title = "ონლაინ ტესტები: რეიტინგი";
+    Layout = "~/Views/Shared/_TestsLayout.cshtml";
+}
+
+@using (Html.BeginForm("SearchTestRaitings", "Raiting", FormMethod.Get))
+            {
+                <div class="container">
+                    <div class="form-group pull-right">
+                        @Html.TextBox("tname",null,new {@style="width:200px", @placeholder="ტესტის რეიტინგის ძიება"})
+                        <button type="submit" class="btn btn-primary">
+                        <span class="glyphicon glyphicon-search"></span>
+                        </button>
+                    </div>
+               </div>
+            }
+<div class="alert alert-info">მომხმარებლის რეიტინგის დათვლა ხდება შემდეგი პრინციპით: ამ მომხმარებლის მიერ გავლილი თითოეული შენახული ტესტისთვის ითვლება Score, 
+    რომელიც წარმოადგენს ტესტის სირთულის ნამრავლს აღებულ ქულაზე და ხდება Score-ების დაჯამვა
+</div>
+<h4>მომხმარებლების რეიტინგი:</h4>
+<hr />
+<table class="table table-hover text-center">
+    <thead>
+        <tr>
+            <th class="text-center"></th>
+            <th class="text-center">მომხმარებლის სახელი</th>
+            <th class="text-center">რეიტინგი</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+        <tr>
+            <td>@int.Parse((Model.ToList().IndexOf(user)+1).ToString())</td>
+            <td>@Html.ActionLink(user.Name, "Index", "Profile", new { UserID = user.UserID }, null)</td>
+            <td>@user.Score</td>
+        </tr>
+        }
+    </tbody>
+</table>
+

@@ -1,0 +1,27 @@
+﻿@model OnlineTests.Domain.Entities.Question
+
+@if(ViewBag.ValidQuestion=="False"){
+  <div class="alert alert-danger">არავალიდური შეკითხვა! ეს შეკითხვა არ შევა ტესტებში!
+       ვალიდურ შეკითხვას უნდა ჰქონდეს მინიმუმ ორი სავარაუდო პასუხი, სწორი პასუხების 
+      რაოდენობა მინიმუმ ერთი და ნაკლები სავარაუდო პასუხებზე!
+  </div>
+}
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <table class="col-md-12">
+            <tr>
+                <td class="col-md-3">@Html.ActionLink("კითხვა "+(string)ViewBag.QuestionNumber, "Edit_Create_Question", new { testID = Model.ID, questionID = Model.ID }, new { @class="btn btn-default"})</td>
+                <td class="col-md-3">
+                    <label class="btn btn-default" style="cursor: default">მაქსიმალური ქულა: <span class="badge">@Model.Point</span></label></td>
+                <td class="col-md-4">
+                    <label class="btn btn-default" style="cursor: default">დრო პასუხის გასაცემად: <span class="badge">@Model.TimeForAnswer წამი</span> </label>
+                </td>
+                <td class="col-md-2">@Html.ActionLink("კითხვის წაშლა", "deleteQuestion", new {  questionID=Model.ID,returnUrl=Request.Url.PathAndQuery  }, new { @class="btn btn-warning"})</td>
+            </tr>
+        </table>
+    </div>
+    <div class="panel-body">
+        <div class="well">@Model.Text</div>
+        @Html.Partial("AdminAnswersSummary", Model.Answers)
+    </div>
+</div>
